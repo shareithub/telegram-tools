@@ -11,6 +11,10 @@
 2. auto unsubs Channel & Group telegram
 3. Login by phone number or QR code
 
+# Tutorial video :
+
+https://youtu.be/sdJizHuBApQ
+
 # Tutorial : 
 
  1. Get API HASH & API ID in web : https://my.telegram.org/apps
