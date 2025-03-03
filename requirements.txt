@@ -1,0 +1,3 @@
+shareithub
+telethon
+qrcode-terminal
