@@ -84,13 +84,21 @@ async def auto_join_channels(client):
             print(f"✅ Berhasil join ke channel: {name} (ID: {chat.id})")
         except Exception as e:
             print(f"⚠️ Gagal join ke channel {chat.id}: {e}")
-        await asyncio.sleep(5)
+        await asyncio.sleep(10)
 
 async def telethon_manage(session_name, config):
     api_id = config.get("api_id")
     api_hash = config.get("api_hash")
     client = TelegramClient(session_name, int(api_id), api_hash)
     await client.connect()
+
+    session_file = session_name + ".session"
+    if os.path.exists(session_file):
+        try:
+            os.chmod(session_file, 0o600)
+        except Exception as e:
+            print(f"Error setting file permission for {session_file}: {e}")
+
     if not await client.is_user_authorized():
         print("Session belum terautorisasi. Silakan pilih metode login:")
         print("1. QR Code")
@@ -148,7 +156,6 @@ async def telethon_manage(session_name, config):
         chats = await scrape_tele_chats(client)
         if not chats:
             print("⚠️ Tidak ada channel/grup yang terdeteksi pada akun ini.")
-            session_file = session_name + ".session"
             if os.path.exists(session_file):
                 os.chmod(session_file, 0o600)
             await client.disconnect()
@@ -173,14 +180,12 @@ async def telethon_manage(session_name, config):
                 selected_chats = [chats[i] for i in selected_indexes if 0 <= i < len(chats)]
             except Exception as e:
                 print(f"🚫 Terjadi kesalahan dalam pemilihan: {e}")
-                session_file = session_name + ".session"
                 if os.path.exists(session_file):
                     os.chmod(session_file, 0o600)
                 await client.disconnect()
                 return
         else:
             print("🚫 Pilihan tidak valid.")
-            session_file = session_name + ".session"
             if os.path.exists(session_file):
                 os.chmod(session_file, 0o600)
             await client.disconnect()
@@ -191,7 +196,7 @@ async def telethon_manage(session_name, config):
                 await client(LeaveChannelRequest(chat.id))
                 name = chat.title if hasattr(chat, "title") and chat.title else getattr(chat, "username", str(chat.id))
                 print(f"✅ Berhasil keluar dari: {name} (ID: {chat.id})")
-                await asyncio.sleep(5)
+                await asyncio.sleep(10)
             except Exception as e:
                 print(f"⚠️ Gagal keluar dari {chat.id}: {e}")
 
@@ -201,7 +206,6 @@ async def telethon_manage(session_name, config):
     else:
         print("Pilihan operasi tidak valid.")
 
-    session_file = session_name + ".session"
     if os.path.exists(session_file):
         os.chmod(session_file, 0o600)
     await client.disconnect()
