@@ -84,7 +84,7 @@ async def auto_join_channels(client):
             print(f"✅ Berhasil join ke channel: {name} (ID: {chat.id})")
         except Exception as e:
             print(f"⚠️ Gagal join ke channel {chat.id}: {e}")
-        await asyncio.sleep(10)
+        await asyncio.sleep(60)
 
 async def telethon_manage(session_name, config):
     api_id = config.get("api_id")
@@ -196,7 +196,7 @@ async def telethon_manage(session_name, config):
                 await client(LeaveChannelRequest(chat.id))
                 name = chat.title if hasattr(chat, "title") and chat.title else getattr(chat, "username", str(chat.id))
                 print(f"✅ Berhasil keluar dari: {name} (ID: {chat.id})")
-                await asyncio.sleep(10)
+                await asyncio.sleep(60)
             except Exception as e:
                 print(f"⚠️ Gagal keluar dari {chat.id}: {e}")
 
